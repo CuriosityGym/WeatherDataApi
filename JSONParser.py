@@ -2,10 +2,79 @@ import requests
 import json
 import re
 
+import os
 
-jsontree="main.temp_max"
+from flask import Response, Flask
 
-splittree=jsontree.split(".")
+app = Flask(__name__)
+
+@app.route("/humidity")
+def getHumidity():
+    return getData("main.humidity")
+    
+@app.route("/temperature")
+def getTemperature():
+    return getData("main.temp")
+
+@app.route("/weatherDescription")
+def getWeatherDescription():
+    return getData("weather.main")
+    
+    
+
+
+
+def getData(jsontree):
+    requestURL="http://api.openweathermap.org/data/2.5/weather?id=1275339&appid=15373f8c0b06b6e66e6372db065c4e46"
+    filename='jsondata.json'
+    response = download_file(requestURL, filename)
+    with open(filename) as data_file:    
+        data = json.load(data_file)
+    splittree=jsontree.split(".")    
+    lastLeafIndex = len(splittree) - 1
+    #jsontree="main.temp"
+    
+    for i, leaf in enumerate(splittree):
+        if i == lastLeafIndex:
+            continue
+        else:
+           leafDataIndex=0
+           result =  re.findall(r'\[([^]]*)\]', leaf)
+           if result:
+              leafDataIndex=result[0]
+              leaf=leaf.replace("["+leafDataIndex+"]","")
+              leafDataIndex=int(leafDataIndex)
+           #print (leafDataIndex)
+        try:        
+            data=data[leaf][leafDataIndex]
+        except(KeyError):
+           try: 
+               data=data[leaf]
+           except (KeyError):
+               return "Error"
+               exit()
+
+    leaf=splittree[lastLeafIndex]
+    leafDataIndex=0
+    result =  re.findall(r'\[([^]]*)\]', leaf)
+    if result:
+        leafDataIndex=result[0]
+        leaf=leaf.replace("["+leafDataIndex+"]","")
+        leafDataIndex=int(leafDataIndex)
+        #print (data[leaf][leafDataIndex])
+    else:
+       return str(data[leaf])
+   
+
+
+
+
+
+
+
+
+
+
 def download_file(url,filename):
     local_filename = filename
     # NOTE the stream=True parameter
@@ -15,52 +84,13 @@ def download_file(url,filename):
             if chunk: # filter out keep-alive new chunks
                 f.write(chunk)
                 #f.flush() commented by recommendation from J.F.Sebastian
-    return local_filename
-
-
-requestURL="http://api.openweathermap.org/data/2.5/weather?id=1275339&appid=15373f8c0b06b6e66e6372db065c4e46"
-filename='jsondata.json'
-
-response = download_file(requestURL, filename)
-with open(filename) as data_file:    
-    data = json.load(data_file)
-lastLeafIndex = len(splittree) - 1
-#for leaf in splittree:
-    #
-for i, leaf in enumerate(splittree):
-    if i == lastLeafIndex:
-        continue
-    else:
-       leafDataIndex=0
-       result =  re.findall(r'\[([^]]*)\]', leaf)
-       if result:
-          leafDataIndex=result[0]
-          leaf=leaf.replace("["+leafDataIndex+"]","")
-          leafDataIndex=int(leafDataIndex)
-       #print (leafDataIndex)
-    try:        
-        data=data[leaf][leafDataIndex]
-    except(KeyError):
-       try: 
-           data=data[leaf]
-       except (KeyError):
-           print ("Error")
-           exit()
-
-leaf=splittree[lastLeafIndex]
-leafDataIndex=0
-result =  re.findall(r'\[([^]]*)\]', leaf)
-if result:
-    leafDataIndex=result[0]
-    leaf=leaf.replace("["+leafDataIndex+"]","")
-    leafDataIndex=int(leafDataIndex)
-    #print (data[leaf][leafDataIndex])
-else:
-   print (data[leaf]) 
+    return True
 
 
 
-
+if __name__ == "__main__":
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host='0.0.0.0', port=port,debug=True)
 
 
  
