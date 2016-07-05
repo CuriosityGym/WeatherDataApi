@@ -4,28 +4,39 @@ import re
 
 import os
 
-from flask import Response, Flask
+from flask import Response, Flask, request
 
 app = Flask(__name__)
+gCityID="1275339"
+gAppID="15373f8c0b06b6e66e6372db065c4e46"
+
+	
 
 @app.route("/humidity")
 def getHumidity():
-    return getData("main.humidity")
+        gCityID = request.args.get('id')
+        gAppID = request.args.get('appid')    
+        return getData(gCityID, gAppID, "main.humidity")
     
 @app.route("/temperature")
 def getTemperature():
-    return getData("main.temp")
+        gCityID = request.args.get('id')
+        gAppID = request.args.get('appid')    
+        return getData(gCityID, gAppID, "main.temp")
 
 @app.route("/weatherDescription")
 def getWeatherDescription():
-    return getData("weather.main")
+        gCityID = request.args.get('id')
+        gAppID = request.args.get('appid')    
+        return getData(gCityID, gAppID, "weather.main")
     
     
 
 
 
-def getData(jsontree):
-    requestURL="http://api.openweathermap.org/data/2.5/weather?id=1275339&appid=15373f8c0b06b6e66e6372db065c4e46"
+def getData(lCityID, lAppID, jsontree):
+    #requestURL="http://api.openweathermap.org/data/2.5/weather?id=1275339&appid=15373f8c0b06b6e66e6372db065c4e46"
+    requestURL="http://api.openweathermap.org/data/2.5/weather?id="+lCityID+"&appid="+lAppID
     filename='jsondata.json'
     response = download_file(requestURL, filename)
     with open(filename) as data_file:    
@@ -82,8 +93,7 @@ def download_file(url,filename):
     with open(local_filename, 'wb') as f:
         for chunk in r.iter_content(chunk_size=1024): 
             if chunk: # filter out keep-alive new chunks
-                f.write(chunk)
-                #f.flush() commented by recommendation from J.F.Sebastian
+                f.write(chunk)                
     return True
 
 
