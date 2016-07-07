@@ -5,7 +5,7 @@ import re
 import os
 
 from flask import Response, Flask, request
-
+errorText="Error"
 app = Flask(__name__)
 gCityID="1275339"
 gAppID="15373f8c0b06b6e66e6372db065c4e46"
@@ -15,20 +15,30 @@ gAppID="15373f8c0b06b6e66e6372db065c4e46"
 @app.route("/humidity")
 def getHumidity():
         gCityID = request.args.get('id')
-        gAppID = request.args.get('appid')    
-        return getData(gCityID, gAppID, "main.humidity")
+        gAppID = request.args.get('appid')
+        try:
+                
+                return getData(gCityID, gAppID, "main.humidity")
+        except:
+                return errorText
     
 @app.route("/temperature")
 def getTemperature():
         gCityID = request.args.get('id')
-        gAppID = request.args.get('appid')    
-        return getData(gCityID, gAppID, "main.temp")
+        gAppID = request.args.get('appid')
+        try:	
+                return getData(gCityID, gAppID, "main.temp")
+        except:
+                return errorText
 
 @app.route("/weatherDescription")
 def getWeatherDescription():
         gCityID = request.args.get('id')
-        gAppID = request.args.get('appid')    
-        return getData(gCityID, gAppID, "weather.main")
+        gAppID = request.args.get('appid')        
+        try:	
+                return getData(gCityID, gAppID, "weather.main")
+        except:
+                return errorText
     
     
 
