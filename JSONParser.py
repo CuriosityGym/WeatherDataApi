@@ -9,7 +9,7 @@ errorText="Error"
 app = Flask(__name__)
 gCityID="1275339"
 gAppID="15373f8c0b06b6e66e6372db065c4e46"
-
+filename='temp.json'
 	
 
 @app.route("/humidity")
@@ -18,8 +18,9 @@ def getHumidity():
         gAppID = request.args.get('appid')
         try:
                 
-                URL="http://api.openweathermap.org/data/2.5/weather?id="+gCityID+"&appid="+gAppID
-                return getData(URL,"main.humidity")
+                requestURL="http://api.openweathermap.org/data/2.5/weather?id="+gCityID+"&appid="+gAppID
+                response = download_file(requestURL, filename)
+                return getData("main.humidity")
         except:
                 return errorText
     
@@ -28,8 +29,9 @@ def getTemperature():
         gCityID = request.args.get('id')
         gAppID = request.args.get('appid')
         try:	
-                URL="http://api.openweathermap.org/data/2.5/weather?id="+gCityID+"&appid="+gAppID
-                return getData(URL,"main.temp")
+                requestURL="http://api.openweathermap.org/data/2.5/weather?id="+gCityID+"&appid="+gAppID
+                response = download_file(requestURL, filename)
+                return getData("main.temp")
         except:
                 return errorText
 
@@ -38,38 +40,36 @@ def getWeatherDescription():
         gCityID = request.args.get('id')
         gAppID = request.args.get('appid')        
         try:
-                URL="http://api.openweathermap.org/data/2.5/weather?id="+gCityID+"&appid="+gAppID
-                return getData(URL,"weather.main")
+                requestURL="http://api.openweathermap.org/data/2.5/weather?id="+gCityID+"&appid="+gAppID
+                
+                response = download_file(requestURL, filename)
+                return getData("weather.main")
         except:
                 return errorText
 				
 @app.route("/getCityCountry")
 def getLocation():
-        
-        if "X-Forwarded-For" in request.headers:
-                IPAddress=request.headers['X-Forwarded-For']
-        else:
-                IPAddress=request.environ['REMOTE_ADDR']
-        return IPAddress        
+        try:
+                if "X-Forwarded-For" in request.headers:
+                        IPAddress=request.headers['X-Forwarded-For']
+                else:
+                        IPAddress=request.environ['REMOTE_ADDR']
+                #return IPAddress        
                
-##        try:	
-##                return getData(gCityID, gAppID, "weather.main")
-##        except:
-##                return errorText
+        	#URL="http://ip-api.com/json/"+IPAddress
+                requestURL="http://ip-api.com/json/182.56.200.95"
+                response = download_file(requestURL, filename)
+                cityName=getData("city")
+                countryName=getData("country")
+                return cityName+ ", "+countryName
+                
+        except:
+                return errorText
     
     
-def get_client_ip(request):
-    x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
-    if x_forwarded_for:
-        ip = x_forwarded_for.split(',')[-1].strip()
-    else:
-        ip = request.META.get('REMOTE_ADDR')
-    return ip
 
 
-def getData(requestURL, jsontree):
-    filename='temp.json'
-    response = download_file(requestURL, filename)
+def getData(jsontree):    
     with open(filename) as data_file:    
         data = json.load(data_file)
     splittree=jsontree.split(".")    
@@ -106,13 +106,6 @@ def getData(requestURL, jsontree):
         #print (data[leaf][leafDataIndex])
     else:
        return str(data[leaf])
-   
-
-
-
-
-
-
 
 
 
