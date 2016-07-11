@@ -45,8 +45,10 @@ def getWeatherDescription():
 				
 @app.route("/getCityCountry")
 def getLocation():
-        IPAddress=request.environ['REMOTE_ADDR']
-        return IPAddress
+        IPAddress='127.0.0.1'
+        if "X-Forwarded-For" in request.headers:
+                IPAddress=request.headers['X-Forwarded-For']
+        return IPAddress        
                
 ##        try:	
 ##                return getData(gCityID, gAppID, "weather.main")
@@ -54,7 +56,13 @@ def getLocation():
 ##                return errorText
     
     
-
+def get_client_ip(request):
+    x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+    if x_forwarded_for:
+        ip = x_forwarded_for.split(',')[-1].strip()
+    else:
+        ip = request.META.get('REMOTE_ADDR')
+    return ip
 
 
 def getData(requestURL, jsontree):
