@@ -45,7 +45,7 @@ def getWeatherDescription():
 				
 @app.route("/getCityCountry")
 def getLocation():
-        IPAddress=request.remote_addr
+        IPAddress=request.environ['REMOTE_ADDR']
         return IPAddress
                
 ##        try:	
