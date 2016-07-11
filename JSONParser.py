@@ -56,8 +56,8 @@ def getLocation():
                         IPAddress=request.environ['REMOTE_ADDR']
                 #return IPAddress        
                
-        	#URL="http://ip-api.com/json/"+IPAddress
-                requestURL="http://ip-api.com/json/182.56.200.95"
+        	requestURL="http://ip-api.com/json/"+IPAddress
+                #requestURL="http://ip-api.com/json/182.56.200.95"
                 response = download_file(requestURL, filename)
                 cityName=getData("city")
                 countryName=getData("country")
