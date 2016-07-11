@@ -45,9 +45,11 @@ def getWeatherDescription():
 				
 @app.route("/getCityCountry")
 def getLocation():
-        IPAddress='127.0.0.1'
+        
         if "X-Forwarded-For" in request.headers:
                 IPAddress=request.headers['X-Forwarded-For']
+        else:
+                IPAddress=request.environ['REMOTE_ADDR']
         return IPAddress        
                
 ##        try:	
