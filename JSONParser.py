@@ -18,7 +18,8 @@ def getHumidity():
         gAppID = request.args.get('appid')
         try:
                 
-                return getData(gCityID, gAppID, "main.humidity")
+                URL="http://api.openweathermap.org/data/2.5/weather?id="+gCityID+"&appid="+gAppID
+                return getData(URL,"main.humidity")
         except:
                 return errorText
     
@@ -27,7 +28,8 @@ def getTemperature():
         gCityID = request.args.get('id')
         gAppID = request.args.get('appid')
         try:	
-                return getData(gCityID, gAppID, "main.temp")
+                URL="http://api.openweathermap.org/data/2.5/weather?id="+gCityID+"&appid="+gAppID
+                return getData(URL,"main.temp")
         except:
                 return errorText
 
@@ -35,19 +37,28 @@ def getTemperature():
 def getWeatherDescription():
         gCityID = request.args.get('id')
         gAppID = request.args.get('appid')        
-        try:	
-                return getData(gCityID, gAppID, "weather.main")
+        try:
+                URL="http://api.openweathermap.org/data/2.5/weather?id="+gCityID+"&appid="+gAppID
+                return getData(URL,"weather.main")
         except:
                 return errorText
+				
+@app.route("/getCityCountry")
+def getLocation():
+        IPAddress=request.remote_addr
+        return IPAddress
+               
+##        try:	
+##                return getData(gCityID, gAppID, "weather.main")
+##        except:
+##                return errorText
     
     
 
 
 
-def getData(lCityID, lAppID, jsontree):
-    #requestURL="http://api.openweathermap.org/data/2.5/weather?id=1275339&appid=15373f8c0b06b6e66e6372db065c4e46"
-    requestURL="http://api.openweathermap.org/data/2.5/weather?id="+lCityID+"&appid="+lAppID
-    filename='jsondata.json'
+def getData(requestURL, jsontree):
+    filename='temp.json'
     response = download_file(requestURL, filename)
     with open(filename) as data_file:    
         data = json.load(data_file)
