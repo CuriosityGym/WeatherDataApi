@@ -60,7 +60,7 @@ def getLocation():
                 #requestURL="http://ip-api.com/json/182.56.200.95"
                 response = download_file(requestURL, filename)
                 cityName=getData("city")
-                countryName=getData("country")
+                countryName=getData("countryCode")
                 return cityName+ ", "+countryName
                 
         except:
