@@ -10,7 +10,7 @@ app = Flask(__name__)
 gCityID="1275339"
 gAppID="15373f8c0b06b6e66e6372db065c4e46"
 filename='temp.json'
-returnCharacter=chr(4)
+
 	
 
 @app.route("/humidity")
@@ -21,7 +21,7 @@ def getHumidity():
                 
                 requestURL="http://api.openweathermap.org/data/2.5/weather?id="+gCityID+"&appid="+gAppID
                 response = download_file(requestURL, filename)
-                return getData("main.humidity")+returnCharacter
+                return getData("main.humidity")
         except:
                 return errorText
     
@@ -32,7 +32,7 @@ def getTemperature():
         try:	
                 requestURL="http://api.openweathermap.org/data/2.5/weather?id="+gCityID+"&appid="+gAppID
                 response = download_file(requestURL, filename)
-                return getData("main.temp")+returnCharacter
+                return getData("main.temp")
         except:
                 return errorText
 
@@ -43,7 +43,7 @@ def getWeatherDescription():
         try:
                 requestURL="http://api.openweathermap.org/data/2.5/weather?id="+gCityID+"&appid="+gAppID                
                 response = download_file(requestURL, filename)
-                return getData("weather.main")+returnCharacter
+                return getData("weather.main")
         except:
                 return errorText
 				
@@ -60,7 +60,7 @@ def getLocation():
                 response = download_file(requestURL, filename)
                 cityName=getData("city")
                 countryName=getData("countryCode")
-                return cityName+ ", "+countryName+returnCharacter # Mumbai, IN, for example
+                return cityName+ ", "+countryName # Mumbai, IN, for example
                 
         except:
                 return errorText
