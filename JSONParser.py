@@ -17,8 +17,9 @@ filename='temp.json'
 def getHumidity():
         gCityID = request.args.get('id')
         gAppID = request.args.get('appid')
+
         try:
-                
+
                 requestURL="http://api.openweathermap.org/data/2.5/weather?id="+gCityID+"&appid="+gAppID
                 response = download_file(requestURL, filename)
                 return getData("main.humidity")
@@ -47,8 +48,8 @@ def getWeatherDescription():
         except:
                 return errorText
 				
-@app.route("/getCityCountry")
-def getLocation():
+@app.route("/getCityCountryByIP")
+def getLocationbyIP():
         try:
                 if "X-Forwarded-For" in request.headers:
                         IPAddress=request.headers['X-Forwarded-For']
@@ -56,7 +57,7 @@ def getLocation():
                         IPAddress=request.environ['REMOTE_ADDR']
                 
                 requestURL="http://ip-api.com/json/"+IPAddress
-        	#requestURL="http://ip-api.com/json/182.56.200.95"
+                #requestURL="http://ip-api.com/json/182.56.200.95"
                 response = download_file(requestURL, filename)
                 cityName=getData("city")
                 countryName=getData("countryCode")
@@ -64,6 +65,20 @@ def getLocation():
                 
         except:
                 return errorText
+				
+@app.route("/getCityCountry")
+def getLocation():
+        gCityID = request.args.get('id')
+        gAppID = request.args.get('appid')
+        try:
+                requestURL="http://api.openweathermap.org/data/2.5/weather?id="+gCityID+"&appid="+gAppID
+                response = download_file(requestURL, filename)        
+                cityName=getData("name")
+                countryName=getData("sys.country")
+                return cityName+ ", "+countryName # Mumbai, IN, for example
+
+        except:
+                return errorText				
     
     
 
