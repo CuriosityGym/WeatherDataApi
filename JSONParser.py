@@ -15,12 +15,18 @@ filename='temp.json'
 
 @app.route("/humidity")
 def getHumidity():
+       
         gCityID = request.args.get('id')
         gAppID = request.args.get('appid')
 
-        try:
+        if (gCityID is None):
+                latitude,longitude=getLatLongFromIP()
+                requestURL="http://api.openweathermap.org/data/2.5/weather?lat="+latitude+"&lon="+longitude+"&appid="+gAppID  
+        else:
+                requestURL="http://api.openweathermap.org/data/2.5/weather?id="+gCityID+"&appid="+gAppID        
 
-                requestURL="http://api.openweathermap.org/data/2.5/weather?id="+gCityID+"&appid="+gAppID
+       
+        try:        
                 response = download_file(requestURL, filename)
                 return getData("main.humidity")
         except:
@@ -30,8 +36,15 @@ def getHumidity():
 def getTemperature():
         gCityID = request.args.get('id')
         gAppID = request.args.get('appid')
-        try:	
-                requestURL="http://api.openweathermap.org/data/2.5/weather?id="+gCityID+"&appid="+gAppID
+
+        if (gCityID is None):
+                latitude,longitude=getLatLongFromIP()
+                requestURL="http://api.openweathermap.org/data/2.5/weather?lat="+latitude+"&lon="+longitude+"&appid="+gAppID  
+        else:
+                requestURL="http://api.openweathermap.org/data/2.5/weather?id="+gCityID+"&appid="+gAppID        
+
+       
+        try:        
                 response = download_file(requestURL, filename)
                 return getData("main.temp")
         except:
@@ -40,9 +53,16 @@ def getTemperature():
 @app.route("/weatherDescription")
 def getWeatherDescription():
         gCityID = request.args.get('id')
-        gAppID = request.args.get('appid')        
-        try:
-                requestURL="http://api.openweathermap.org/data/2.5/weather?id="+gCityID+"&appid="+gAppID                
+        gAppID = request.args.get('appid')
+
+        if (gCityID is None):
+                latitude,longitude=getLatLongFromIP()
+                requestURL="http://api.openweathermap.org/data/2.5/weather?lat="+latitude+"&lon="+longitude+"&appid="+gAppID  
+        else:
+                requestURL="http://api.openweathermap.org/data/2.5/weather?id="+gCityID+"&appid="+gAppID        
+
+       
+        try:        
                 response = download_file(requestURL, filename)
                 return getData("weather.main")
         except:
@@ -80,7 +100,22 @@ def getLocation():
         except:
                 return errorText				
     
-    
+def getLatLongFromIP():
+        try:
+                if "X-Forwarded-For" in request.headers:
+                        IPAddress=request.headers['X-Forwarded-For']
+                else:
+                        IPAddress=request.environ['REMOTE_ADDR']
+
+                requestURL="http://ip-api.com/json/"+IPAddress
+                #requestURL="http://ip-api.com/json/182.56.200.95"
+                response = download_file(requestURL, filename)
+                latitude=getData("lat")
+                longitude=getData("lon")
+                return (latitude, longitude) 
+
+        except:
+                return (0,0)  
 
 
 def getData(jsontree):    
