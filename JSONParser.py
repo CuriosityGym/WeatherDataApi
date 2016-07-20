@@ -21,16 +21,17 @@ def getHumidity():
 
         if (gCityID is None):
                 latitude,longitude=getLatLongFromIP()
+                return latitude
                 requestURL="http://api.openweathermap.org/data/2.5/weather?lat="+latitude+"&lon="+longitude+"&appid="+gAppID  
         else:
                 requestURL="http://api.openweathermap.org/data/2.5/weather?id="+gCityID+"&appid="+gAppID        
-
+        return requestURL
        
         #try:        
-                response = download_file(requestURL, filename)
-                return getData("main.humidity")
+        response = download_file(requestURL, filename)
+        return getData("main.humidity")
         #except:
-         #       return errorText
+        #       return errorText
     
 @app.route("/temperature")
 def getTemperature():
