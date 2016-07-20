@@ -10,7 +10,11 @@ In simple terms, this is a data filtering service which only gives specific part
 
 This service uses the free servers on Heroku which have a generous 550hrs/month limit for any web application that wants to be hosted with them.
 
-The code allows you to have three services 
+The code allows you to have three services
+The first parameter is the cityid found from openweathermapsapi. 1275339 corresponds to Mumbai, India
+The second parameter is a appid which you have to get as an api key from openweathermaps. The appid 15373f8c0b06b6e66e6372db065c4e46 belongs to us and has been kept here for demo, please do not use it in your application.(We may discontinue its use anytime we see usage abuse)
+
+**Manual City Configuration **
 
 **Humidty**
 
@@ -24,7 +28,34 @@ http://idiotware.herokuapp.com/temperature?id=1275339&appid=15373f8c0b06b6e66e63
 
 http://idiotware.herokuapp.com/weatherDescription?id=1275339&appid=15373f8c0b06b6e66e6372db065c4e46
 
-The first parameter is the cityid found from openweathermapsapi. 1275339 corresponds to Mumbai, India
-The second parameter is a appid which you have to get as an api key from openweathermaps. The appid 15373f8c0b06b6e66e6372db065c4e46 belongs to us and has been kept here for demo, please do not use it in your application.(We may discontinue its use anytime we see usage abuse)
+**City and Country**
+
+http://idiotware.herokuapp.com/getCityCountry?id=1275339&appid=15373f8c0b06b6e66e6372db065c4e46
+
+
+
+
+**Automatic Location Detection by IP**
+
+We have been able to add automatic detection of city which the device is asking data for, based on IP address. If you would like to use automatic detection, please do not add the id parameter in the above URL's
+
+**Humidty**
+
+http://idiotware.herokuapp.com/humidity?appid=15373f8c0b06b6e66e6372db065c4e46
+
+**Temperature**
+
+http://idiotware.herokuapp.com/temperature?appid=15373f8c0b06b6e66e6372db065c4e46
+
+**Weather Description**
+
+http://idiotware.herokuapp.com/weatherDescription?appid=15373f8c0b06b6e66e6372db065c4e46
+
+**City and Country**
+
+http://idiotware.herokuapp.com/getCityCountryByIP
+
+
+
 
 
