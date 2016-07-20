@@ -26,11 +26,11 @@ def getHumidity():
                 requestURL="http://api.openweathermap.org/data/2.5/weather?id="+gCityID+"&appid="+gAppID        
 
        
-        try:        
+        #try:        
                 response = download_file(requestURL, filename)
                 return getData("main.humidity")
-        except:
-                return errorText
+        #except:
+         #       return errorText
     
 @app.route("/temperature")
 def getTemperature():
