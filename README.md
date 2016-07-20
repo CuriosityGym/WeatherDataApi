@@ -14,7 +14,7 @@ The code allows you to have three services
 The first parameter is the cityid found from openweathermapsapi. 1275339 corresponds to Mumbai, India
 The second parameter is a appid which you have to get as an api key from openweathermaps. The appid 15373f8c0b06b6e66e6372db065c4e46 belongs to us and has been kept here for demo, please do not use it in your application.(We may discontinue its use anytime we see usage abuse)
 
-**Manual City Configuration **
+#Manual City Configuration
 
 **Humidty**
 
@@ -35,7 +35,7 @@ http://idiotware.herokuapp.com/getCityCountry?id=1275339&appid=15373f8c0b06b6e66
 
 
 
-**Automatic Location Detection by IP**
+#Automatic Location Detection by IP**
 
 We have been able to add automatic detection of city which the device is asking data for, based on IP address. If you would like to use automatic detection, please do not add the id parameter in the above URL's
 
