@@ -10,11 +10,13 @@ In simple terms, this is a data filtering service which only gives specific part
 
 This service uses the free servers on Heroku which have a generous 550hrs/month limit for any web application that wants to be hosted with them.
 
+
+
+#Manual City Configuration
+
 The code allows you to have three services
 The first parameter is the cityid found from openweathermapsapi. 1275339 corresponds to Mumbai, India
 The second parameter is a appid which you have to get as an api key from openweathermaps. The appid 15373f8c0b06b6e66e6372db065c4e46 belongs to us and has been kept here for demo, please do not use it in your application.(We may discontinue its use anytime we see usage abuse)
-
-#Manual City Configuration
 
 **Humidty**
 
