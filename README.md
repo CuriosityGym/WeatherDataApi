@@ -35,7 +35,7 @@ http://idiotware.herokuapp.com/getCityCountry?id=1275339&appid=15373f8c0b06b6e66
 
 
 
-#Automatic Location Detection by IP**
+#Automatic Location Detection by IP
 
 We have been able to add automatic detection of city which the device is asking data for, based on IP address. If you would like to use automatic detection, please do not add the id parameter in the above URL's
 
