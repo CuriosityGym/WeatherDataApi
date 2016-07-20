@@ -25,7 +25,7 @@ def getHumidity():
                 requestURL="http://api.openweathermap.org/data/2.5/weather?lat="+latitude+"&lon="+longitude+"&appid="+gAppID  
         else:
                 requestURL="http://api.openweathermap.org/data/2.5/weather?id="+gCityID+"&appid="+gAppID        
-        return requestURL
+        #return requestURL
        
         #try:        
         response = download_file(requestURL, filename)
@@ -153,7 +153,7 @@ def getData(jsontree):
         leafDataIndex=result[0]
         leaf=leaf.replace("["+leafDataIndex+"]","")
         leafDataIndex=int(leafDataIndex)
-        #print (data[leaf][leafDataIndex])
+        return (data[leaf][leafDataIndex])
     else:
        return str(data[leaf])
 
