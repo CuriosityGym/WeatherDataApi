@@ -21,7 +21,7 @@ def getHumidity():
 
         if (gCityID is None):
                 latitude,longitude=getLatLongFromIP()
-                return latitude
+                #return longitude
                 requestURL="http://api.openweathermap.org/data/2.5/weather?lat="+latitude+"&lon="+longitude+"&appid="+gAppID  
         else:
                 requestURL="http://api.openweathermap.org/data/2.5/weather?id="+gCityID+"&appid="+gAppID        
