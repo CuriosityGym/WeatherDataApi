@@ -3,6 +3,7 @@ import json
 import re
 
 import os
+import time
 
 from flask import Response, Flask, request
 errorText="Error"
@@ -107,6 +108,7 @@ def getLatLongFromIP():
                         IPAddress=request.environ['REMOTE_ADDR']
 
                 requestURL="http://ip-api.com/json/"+IPAddress
+
                 #requestURL="http://ip-api.com/json/182.56.200.95"
                 response = download_file(requestURL, filename)
                 latitude=getData("lat")
@@ -169,7 +171,25 @@ def getTimeZoneOffset():
                 return TZOffset
                 
         except:
-               return errorText 
+               return errorText
+        
+@app.route("/getLocalTime")
+def getLocalTime():
+        gAppID = request.args.get('appid')
+        if (gAppID is None):
+                return errorText
+        try:
+                latitude,longitude=getLatLongFromIP()   
+                requestURL="https://maps.googleapis.com/maps/api/timezone/json?location="+latitude+","+longitude+"&timestamp=0&key="+gAppID
+                response = download_file(requestURL, filename)
+                TZOffset=int(getData("rawOffset"))
+                epoch_time = int(time.time())
+                return str(epoch_time+TZOffset)
+        except:
+               return errorText
+        
+
+        
 
   
 def download_file(url,filename):
