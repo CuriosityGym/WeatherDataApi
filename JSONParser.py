@@ -10,7 +10,6 @@ app = Flask(__name__)
 gCityID="1275339"
 gAppID="15373f8c0b06b6e66e6372db065c4e46"
 filename='temp.json'
-
 	
 
 @app.route("/humidity")
@@ -155,10 +154,24 @@ def getData(jsontree):
         return (data[leaf][leafDataIndex])
     else:
        return str(data[leaf])
+	   
+	   
+@app.route("/getTimeZoneOffset")
+def getTimeZoneOffset():
+        gAppID = request.args.get('appid')
+        if (gAppID is None):
+                return errorText
+        try:
+                latitude,longitude=getLatLongFromIP()   
+                requestURL="https://maps.googleapis.com/maps/api/timezone/json?location="+latitude+","+longitude+"&timestamp=0&key="+gAppID
+                response = download_file(requestURL, filename)
+                TZOffset=getData("rawOffset")
+                return TZOffset
+                
+        except:
+               return errorText 
 
-
-
-
+  
 def download_file(url,filename):
     local_filename = filename
     # NOTE the stream=True parameter
