@@ -202,6 +202,9 @@ def download_file(url,filename):
                 f.write(chunk)                
     return True
 
+@app.route('/test')
+def test():
+    return "OK"
 
 
 if __name__ == "__main__":
