@@ -113,8 +113,8 @@ def getLatLongFromIP():
 
                 #requestURL="http://ip-api.com/json/182.56.200.95"
                 response = download_file(requestURL, filename)
-                latitude=getData("lat")
-                longitude=getData("lon")
+                latitude=str(getData("lat"))
+                longitude=str(getData("lon"))
                 return (latitude, longitude) 
 
         except:
